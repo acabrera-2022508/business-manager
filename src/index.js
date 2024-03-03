@@ -3,8 +3,17 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import connection from './database/mongo.js';
-import User from './models/user.model.js';
 import 'dotenv/config';
+
+// Helpers
+import { hashPassword } from './helpers/bcrypt.js';
+
+// Routes
+import userRoutes from './routes/user.routes.js';
+
+// Models
+import User from './models/user.model.js';
+import Category from './models/category.model.js';
 
 const app = express();
 
@@ -16,21 +25,31 @@ app.use(helmet());
 app.use(cors());
 
 // Routes
+app.use('/user', userRoutes);
 
 // Start server
 connection()
   .then(async () => {
     const users = await User.find({});
+    const categories = await Category.find({});
 
     if (users.length === 0) {
       const user = new User({
         name: 'admin',
         lastName: 'admin',
         username: 'admin',
-        password: 'admin',
+        password: await hashPassword('admin'),
       });
 
       await user.save();
+    }
+
+    if (categories.length === 0) {
+      const category = new Category({
+        name: 'Default',
+      });
+
+      await category.save();
     }
   })
   .then(() => {

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import 'dotenv/config';
 import User from '../models/user.model.js';
+import 'dotenv/config';
 
 const isLoggedIn = async (req, res, next) => {
   try {
