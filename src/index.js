@@ -11,6 +11,7 @@ import { hashPassword } from './helpers/bcrypt.js';
 // Routes
 import userRoutes from './routes/user.routes.js';
 import categoryRoutes from './routes/category.routes.js';
+import companyRoutes from './routes/company.routes.js';
 
 // Models
 import User from './models/user.model.js';
@@ -28,6 +29,7 @@ app.use(cors());
 // Routes
 app.use('/user', userRoutes);
 app.use('/category', categoryRoutes);
+app.use('/company', companyRoutes);
 
 // Start server
 connection()
